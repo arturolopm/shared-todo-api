@@ -4,10 +4,10 @@ import { Task } from '../interfaces/task.interface'
 const ItemSchema = new Schema<Task>(
   {
     name: { type: String, required: true },
-    description: { type: String, required: true },
-    addedBy: { type: String, required: true },
-    completedBy: { type: String, required: true },
-    workSpace: { type: String, required: true }
+    completed: { type: Boolean, required: true, default: false },
+    addedBy: { type: String },
+    completedBy: { type: String }
+    // workSpace: { type: String, required: true }
   },
   { timestamps: true, versionKey: false }
 )

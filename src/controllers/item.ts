@@ -41,7 +41,7 @@ const postItem = async ({ body }: Request, res: Response) => {
     const responseItem = await insertTask(body)
     res.send(responseItem)
   } catch (e) {
-    handleHttp(res, 'error post item', e)
+    handleHttp(res, `error post item ${e}`, e)
   }
 }
 const deleteItem = async ({ params }: Request, res: Response) => {
