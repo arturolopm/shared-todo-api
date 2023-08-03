@@ -18,6 +18,7 @@ const updateTask = async (id: string, data: Task) => {
   const responseItem = await ItemModel.findOneAndUpdate({ _id: id }, data, {
     new: true
   })
+
   return responseItem
 }
 const deleteTask = async (id: string) => {
