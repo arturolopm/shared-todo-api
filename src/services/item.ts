@@ -15,6 +15,8 @@ const getTask = async (id: string) => {
 }
 
 const updateTask = async (id: string, data: Task) => {
+  // Do this bc on front data will arrive with the opposite real value for react setstate asyncronous behavior
+  data.completed = !data.completed
   const responseItem = await ItemModel.findOneAndUpdate({ _id: id }, data, {
     new: true
   })
