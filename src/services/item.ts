@@ -27,5 +27,16 @@ const deleteTask = async (id: string) => {
   const responseItem = await ItemModel.findOneAndRemove({ _id: id })
   return responseItem
 }
+const deleteCompletedTasks = async () => {
+  const responseItem = await ItemModel.deleteMany({ completed: true })
+  return responseItem
+}
 
-export { insertTask, getTasks, getTask, updateTask, deleteTask }
+export {
+  insertTask,
+  getTasks,
+  getTask,
+  updateTask,
+  deleteTask,
+  deleteCompletedTasks
+}

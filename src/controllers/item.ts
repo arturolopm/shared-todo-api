@@ -5,7 +5,8 @@ import {
   getTasks,
   getTask,
   updateTask,
-  deleteTask
+  deleteTask,
+  deleteCompletedTasks
 } from '../services/item'
 
 const getItem = async ({ params }: Request, res: Response) => {
@@ -54,5 +55,14 @@ const deleteItem = async ({ params }: Request, res: Response) => {
     handleHttp(res, 'error delete item')
   }
 }
+const deleteItems = async (req: Request, res: Response) => {
+  try {
+    const response = await deleteCompletedTasks()
 
-export { getItem, getItems, updateItem, postItem, deleteItem }
+    res.send(response)
+  } catch (e) {
+    handleHttp(res, 'error delete item')
+  }
+}
+
+export { getItem, getItems, updateItem, postItem, deleteItem, deleteItems }
