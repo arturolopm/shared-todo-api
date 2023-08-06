@@ -1,5 +1,6 @@
 import { Schema, Types, model, Model } from 'mongoose'
 import { User } from '../interfaces/user.interface'
+import ListModel from './list'
 
 const UserSchema = new Schema<User>(
   {

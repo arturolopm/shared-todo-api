@@ -1,5 +1,7 @@
+import { Types } from 'mongoose'
 import { Task } from '../interfaces/task.interface'
 import ItemModel from '../models/item'
+import ListModel from '../models/list'
 const insertTask = async (item: Task) => {
   const responseInsert = await ItemModel.create(item)
   return responseInsert
@@ -32,11 +34,19 @@ const deleteCompletedTasks = async () => {
   return responseItem
 }
 
+const createList = async (id: Types.ObjectId | string) => {
+  const responseItem = await ListModel.create({
+    owners: [{ _id: id }],
+    items: []
+  })
+}
+
 export {
   insertTask,
   getTasks,
   getTask,
   updateTask,
   deleteTask,
-  deleteCompletedTasks
+  deleteCompletedTasks,
+  createList
 }

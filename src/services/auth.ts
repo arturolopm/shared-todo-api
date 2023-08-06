@@ -3,18 +3,27 @@ import { User } from '../interfaces/user.interface'
 import UserModel from '../models/user'
 import { encrypt, verified } from '../utils/bcrypt.handle'
 import { generateToken } from '../utils/jwt.handle'
+import { createList } from './item'
 
 const registerNewUser = async ({ email, password, name }: User) => {
   const checkIs = await UserModel.findOne({ email: email })
   if (checkIs) return 'ALREADY_USER'
   const passHash = await encrypt(password)
-  const registerNewUser = await UserModel.create({
-    email,
-    password: passHash,
-    name
-  })
 
-  const data = loginUser({ email, password })
+  try {
+    const registerNewUser = await UserModel.create({
+      email,
+      password: passHash,
+      name
+    })
+  } catch (error) {
+    return error
+  }
+
+  const data = await loginUser({ email, password })
+  if (data !== 'USER_NOT_FOUND' && data !== 'INCORRECT_PASSWORD') {
+    createList(data._id)
+  }
 
   return data
 }
