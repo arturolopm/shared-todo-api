@@ -15,10 +15,6 @@ const UserSchema = new Schema<User>(
       type: String,
       required: true,
       unique: true
-    },
-    description: {
-      type: String,
-      default: 'Hi there!'
     }
   },
   {

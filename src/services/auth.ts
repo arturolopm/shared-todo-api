@@ -14,22 +14,27 @@ const registerNewUser = async ({ email, password, name }: User) => {
     name
   })
 
-  return registerNewUser
+  const data = loginUser({ email, password })
+
+  return data
 }
 const loginUser = async ({ email, password }: Auth) => {
   const checkIs = await UserModel.findOne({ email })
+
   if (!checkIs) return 'USER_NOT_FOUND'
   const passWordHash = checkIs.password // This is encrypted
   const isCorrect = await verified(password, passWordHash)
 
   if (!isCorrect) return 'INCORRECT_PASSWORD'
-  const { password: passwordToRemove, ...user } = checkIs
-
   const token = await generateToken(checkIs.email)
   const data = {
-    token,
-    user
+    _id: checkIs._id,
+    name: checkIs.name,
+    email: checkIs.email,
+
+    token: token
   }
+
   return data
 }
 
