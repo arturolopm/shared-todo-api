@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import {
   deleteItem,
-  getItem,
+  getItemsInUserList,
   getItems,
   postItem,
   updateItem,
@@ -11,9 +11,9 @@ import { checkJwt } from '../middlewares/session'
 
 const router = Router()
 
+router.get('/:id', checkJwt, getItemsInUserList)
 router.get('/', checkJwt, getItems)
-router.get('/:id', checkJwt, getItem)
-router.post('/', checkJwt, postItem)
+router.post('/:id', checkJwt, postItem)
 router.put('/:id', checkJwt, updateItem)
 router.delete('/:id', checkJwt, deleteItem)
 router.delete('/', checkJwt, deleteItems)

@@ -14,7 +14,8 @@ const ListSchema = new Schema<List>(
     ],
     items: [
       {
-        _id: { type: Types.ObjectId, ref: 'items' }
+        type: Types.ObjectId,
+        ref: 'items'
       }
     ]
   },

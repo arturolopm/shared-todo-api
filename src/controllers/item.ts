@@ -3,16 +3,17 @@ import { handleHttp } from '../utils/error.handle'
 import {
   insertTask,
   getTasks,
-  getTask,
   updateTask,
   deleteTask,
-  deleteCompletedTasks
+  deleteCompletedTasks,
+  locateItemsWithUserId
 } from '../services/item'
 
-const getItem = async ({ params }: Request, res: Response) => {
+const getItemsInUserList = async ({ params }: Request, res: Response) => {
   try {
     const { id } = params
-    const response = await getTask(id)
+    const response = await locateItemsWithUserId(id)
+
     const data = response ? response : 'NOT_FOUND'
 
     res.send(data)
@@ -37,9 +38,9 @@ const updateItem = async ({ params, body }: Request, res: Response) => {
     handleHttp(res, 'error update item')
   }
 }
-const postItem = async ({ body }: Request, res: Response) => {
+const postItem = async ({ body, params }: Request, res: Response) => {
   try {
-    const responseItem = await insertTask(body)
+    const responseItem = await insertTask(body, params.id)
     res.send(responseItem)
   } catch (e) {
     handleHttp(res, `error post item ${e}`, e)
@@ -65,4 +66,11 @@ const deleteItems = async (req: Request, res: Response) => {
   }
 }
 
-export { getItem, getItems, updateItem, postItem, deleteItem, deleteItems }
+export {
+  getItemsInUserList,
+  getItems,
+  updateItem,
+  postItem,
+  deleteItem,
+  deleteItems
+}

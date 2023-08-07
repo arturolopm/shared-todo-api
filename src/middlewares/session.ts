@@ -10,6 +10,7 @@ const checkJwt = async (
   try {
     const jwtByUser = req.headers.authorization || ''
     const jwt = jwtByUser.split(' ').pop()
+
     const isUser = await verifyToken(`${jwt}`)
     console.log('Is Ok: ', isUser)
 

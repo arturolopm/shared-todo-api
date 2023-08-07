@@ -3,8 +3,16 @@ import { Task } from '../interfaces/task.interface'
 import ItemModel from '../models/item'
 import ListModel from '../models/list'
 import UserModel from '../models/user'
-const insertTask = async (item: Task) => {
+import { List } from '../interfaces/list.interface'
+const insertTask = async (item: Task, id: string) => {
   const responseInsert = await ItemModel.create(item)
+  const list = await locateListWithId(id)
+  const listToModify = list[0]
+  if (listToModify) {
+    listToModify.items.push(responseInsert)
+    await listToModify.save()
+  }
+
   return responseInsert
 }
 
@@ -59,6 +67,29 @@ const locateListWithId = async (id: Types.ObjectId | string) => {
 
   return responseItem
 }
+const locateItemsWithUserId = async (id: Types.ObjectId | string) => {
+  if (!isValidObjectId(id)) {
+    throw new Error('Invalid ObjectId')
+  }
+
+  const list = (await ListModel.find({
+    owners: {
+      $in: [new Types.ObjectId(id)]
+    }
+  })
+    .populate({
+      path: 'owners',
+      select: 'name email'
+    })
+    .populate({
+      path: 'items',
+      select: ' name completed'
+    })) as unknown as List[]
+
+  const responseItem = list[0].items
+
+  return responseItem
+}
 
 export {
   insertTask,
@@ -68,5 +99,6 @@ export {
   deleteTask,
   deleteCompletedTasks,
   createList,
-  locateListWithId
+  locateListWithId,
+  locateItemsWithUserId
 }
