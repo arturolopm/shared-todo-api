@@ -7,15 +7,15 @@ import {
   updateItem,
   deleteItems
 } from '../controllers/item'
-import { loggMiddleware } from '../middlewares/log'
+import { checkJwt } from '../middlewares/session'
 
 const router = Router()
 
-router.get('/', getItems)
-router.get('/:id', loggMiddleware, getItem)
-router.post('/', postItem)
-router.put('/:id', updateItem)
-router.delete('/:id', deleteItem)
-router.delete('/', deleteItems)
+router.get('/', checkJwt, getItems)
+router.get('/:id', checkJwt, getItem)
+router.post('/', checkJwt, postItem)
+router.put('/:id', checkJwt, updateItem)
+router.delete('/:id', checkJwt, deleteItem)
+router.delete('/', checkJwt, deleteItems)
 
 export { router }

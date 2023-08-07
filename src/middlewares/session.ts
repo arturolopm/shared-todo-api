@@ -18,7 +18,6 @@ const checkJwt = async (
       res.send('NOT_VALID_SESSION')
     } else {
       req.user = isUser
-      console.log({ jwtByUser })
       next()
     }
   } catch (e) {
