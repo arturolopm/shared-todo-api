@@ -1,7 +1,8 @@
-import { Types } from 'mongoose'
+import { Types, isValidObjectId } from 'mongoose'
 import { Task } from '../interfaces/task.interface'
 import ItemModel from '../models/item'
 import ListModel from '../models/list'
+import UserModel from '../models/user'
 const insertTask = async (item: Task) => {
   const responseInsert = await ItemModel.create(item)
   return responseInsert
@@ -36,9 +37,27 @@ const deleteCompletedTasks = async () => {
 
 const createList = async (id: Types.ObjectId | string) => {
   const responseItem = await ListModel.create({
-    owners: [{ _id: id }],
+    owners: [id],
     items: []
   })
+}
+const locateListWithId = async (id: Types.ObjectId | string) => {
+  if (!isValidObjectId(id)) {
+    throw new Error('Invalid ObjectId')
+  }
+
+  const responseItem = await ListModel.find({
+    owners: {
+      $in: [new Types.ObjectId(id)]
+    }
+  })
+    .populate({
+      path: 'owners',
+      select: 'name email'
+    })
+    .populate({ path: 'items' })
+
+  return responseItem
 }
 
 export {
@@ -48,5 +67,6 @@ export {
   updateTask,
   deleteTask,
   deleteCompletedTasks,
-  createList
+  createList,
+  locateListWithId
 }

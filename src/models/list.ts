@@ -8,12 +8,13 @@ const ListSchema = new Schema<List>(
     name: { type: String, default: 'Todo' },
     owners: [
       {
-        _id: { type: String, ref: UserModel }
+        type: Types.ObjectId,
+        ref: 'users'
       }
     ],
     items: [
       {
-        _id: { type: String, ref: ItemModel }
+        _id: { type: Types.ObjectId, ref: 'items' }
       }
     ]
   },

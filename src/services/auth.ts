@@ -3,7 +3,7 @@ import { User } from '../interfaces/user.interface'
 import UserModel from '../models/user'
 import { encrypt, verified } from '../utils/bcrypt.handle'
 import { generateToken } from '../utils/jwt.handle'
-import { createList } from './item'
+import { createList, locateListWithId } from './item'
 
 const registerNewUser = async ({ email, password, name }: User) => {
   const checkIs = await UserModel.findOne({ email: email })
@@ -22,7 +22,8 @@ const registerNewUser = async ({ email, password, name }: User) => {
 
   const data = await loginUser({ email, password })
   if (data !== 'USER_NOT_FOUND' && data !== 'INCORRECT_PASSWORD') {
-    createList(data._id)
+    const id = data._id
+    createList(id)
   }
 
   return data
@@ -36,11 +37,12 @@ const loginUser = async ({ email, password }: Auth) => {
 
   if (!isCorrect) return 'INCORRECT_PASSWORD'
   const token = await generateToken(checkIs.email)
+  const list = await locateListWithId(checkIs._id)
   const data = {
     _id: checkIs._id,
     name: checkIs.name,
     email: checkIs.email,
-
+    lists: list,
     token: token
   }
 
