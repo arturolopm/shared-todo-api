@@ -1,6 +1,6 @@
 import { Router } from 'express'
 
-import { sendCtrl, acceptCtrl } from '../controllers/invitation'
+import { sendCtrl, acceptCtrl, getCtrl } from '../controllers/invitation'
 import { checkJwt } from '../middlewares/session'
 
 const router = Router()
@@ -8,5 +8,6 @@ const router = Router()
 router.post('/send', checkJwt, sendCtrl)
 // /auth/login
 router.post('/accept', checkJwt, acceptCtrl)
+router.get('/', checkJwt, getCtrl)
 
 export { router }

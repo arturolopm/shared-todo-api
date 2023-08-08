@@ -35,4 +35,14 @@ const processInvitation = async ({ data, user }: InvitationData) => {
 
 const acceptInvitation = () => {}
 
-export { createDataInvitation, acceptInvitation, processInvitation }
+const getAllInvitations = async (user: string) => {
+  const responseItem = await InvitationModel.find({ receiver: user })
+  return responseItem
+}
+
+export {
+  createDataInvitation,
+  acceptInvitation,
+  processInvitation,
+  getAllInvitations
+}

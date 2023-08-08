@@ -2,7 +2,8 @@ import { Request, Response } from 'express'
 import {
   createDataInvitation,
   acceptInvitation,
-  processInvitation
+  processInvitation,
+  getAllInvitations
 } from '../services/invitation'
 import { RequestExtended } from '../interfaces/auth.interface'
 
@@ -24,4 +25,10 @@ const acceptCtrl = async ({ body }: Request, res: Response) => {
   const responseItem = await acceptInvitation()
 }
 
-export { sendCtrl, acceptCtrl }
+const getCtrl = async (req: RequestExtended, res: Response) => {
+  const user = typeof req.user === 'string' ? req.user : req.user?.id
+  const responseItem = await getAllInvitations(user)
+  res.send(responseItem)
+}
+
+export { sendCtrl, acceptCtrl, getCtrl }
