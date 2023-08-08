@@ -51,7 +51,7 @@ const createList = async (id: Types.ObjectId | string) => {
 }
 const locateListWithId = async (id: Types.ObjectId | string) => {
   if (!isValidObjectId(id)) {
-    throw new Error('Invalid ObjectId')
+    throw new Error('Invalid ObjectId 1')
   }
 
   const responseItem = await ListModel.find({
@@ -69,7 +69,7 @@ const locateListWithId = async (id: Types.ObjectId | string) => {
 }
 const locateItemsWithUserId = async (id: Types.ObjectId | string) => {
   if (!isValidObjectId(id)) {
-    throw new Error('Invalid ObjectId')
+    throw new Error('Invalid ObjectId user 2')
   }
 
   const list = (await ListModel.find({
