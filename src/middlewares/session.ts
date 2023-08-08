@@ -12,7 +12,6 @@ const checkJwt = async (
     const jwt = jwtByUser.split(' ').pop()
 
     const isUser = await verifyToken(`${jwt}`)
-    console.log('Is Ok: ', isUser)
 
     if (!isUser) {
       res.status(401)

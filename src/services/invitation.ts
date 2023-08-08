@@ -5,6 +5,7 @@ import { User } from '../interfaces/user.interface'
 import { locateListWithId } from './item'
 import UserModel from '../models/user'
 import InvitationModel from '../models/invitations'
+import { Types } from 'mongoose'
 
 interface InvitationData {
   data: {
@@ -12,6 +13,10 @@ interface InvitationData {
     guest: User
   }
   user: User
+}
+interface AcceptInvitationData {
+  _id: Types.ObjectId
+  user: string
 }
 
 const createDataInvitation = async ({ email, _id }: BasicUser) => {
@@ -33,7 +38,31 @@ const processInvitation = async ({ data, user }: InvitationData) => {
   return { responseItem }
 }
 
-const acceptInvitation = () => {}
+const acceptInvitation = async ({ _id, user }: AcceptInvitationData) => {
+  const invitation = await InvitationModel.findById(_id)
+  if (!invitation) return 'INVITATION_NOT_FOUND'
+  const senderId = invitation ? invitation.senderId : null
+  if (!senderId) {
+    return 'ERROR_NOT_SENDER'
+  }
+  const lists = await locateListWithId(senderId)
+  if (lists.length > 0) {
+    const list = lists[lists.length - 1]
+    const newUser = await UserModel.findOne({ email: user })
+    if (!newUser) return 'ERROR_NOT_USER'
+    const dropList = await locateListWithId(newUser._id)
+    dropList.map(async (userList) => {
+      await userList.deleteOne()
+    })
+    list.owners.push(newUser._id)
+
+    await list.save()
+    await invitation.deleteOne()
+
+    return list
+  }
+  return 'ERROR_NOT_LIST'
+}
 
 const getAllInvitations = async (user: string) => {
   const responseItem = await InvitationModel.find({ receiver: user })

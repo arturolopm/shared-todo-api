@@ -86,7 +86,7 @@ const locateItemsWithUserId = async (id: Types.ObjectId | string) => {
       select: ' name completed'
     })) as unknown as List[]
 
-  const responseItem = list[0].items
+  const responseItem = list[list.length - 1].items
 
   return responseItem
 }
