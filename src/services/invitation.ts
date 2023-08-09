@@ -55,9 +55,11 @@ const acceptInvitation = async ({ _id, user }: AcceptInvitationData) => {
     if (dropList.length > 0 && newUser) {
       await Promise.all(
         dropList.map(async (userList) => {
-          userList.owners = userList.owners.filter(
-            (owner) => owner.toString() !== newUser._id.toString()
-          )
+          if (userList.owners.length > 0) {
+            userList.owners = userList.owners.filter(
+              (owner) => owner.toString() !== newUser._id.toString()
+            )
+          }
 
           await userList.save() // Save changes
         })

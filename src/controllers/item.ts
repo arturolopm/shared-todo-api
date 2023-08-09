@@ -6,7 +6,8 @@ import {
   updateTask,
   deleteTask,
   deleteCompletedTasks,
-  locateItemsWithUserId
+  locateItemsWithUserId,
+  locateListWithId
 } from '../services/item'
 
 const getItemsInUserList = async ({ params }: Request, res: Response) => {
@@ -57,8 +58,10 @@ const deleteItem = async ({ params }: Request, res: Response) => {
   }
 }
 const deleteItems = async (req: Request, res: Response) => {
+  const id = req.params.id
+
   try {
-    const response = await deleteCompletedTasks()
+    const response = await deleteCompletedTasks(id)
 
     res.send(response)
   } catch (e) {

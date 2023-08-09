@@ -7,13 +7,12 @@ import { List } from '../interfaces/list.interface'
 const insertTask = async (item: Task, id: string) => {
   const responseInsert = await ItemModel.create(item)
   let list = await locateListWithId(id)
-  console.log('list before', list)
 
   if (list.length === 0) {
     const newList = await createList(id)
     list = [newList]
   }
-  console.log('list after', list)
+
   const listToModify = list[0]
   if (listToModify) {
     listToModify.items.push(responseInsert)
@@ -45,9 +44,15 @@ const deleteTask = async (id: string) => {
   const responseItem = await ItemModel.findOneAndRemove({ _id: id })
   return responseItem
 }
-const deleteCompletedTasks = async () => {
-  const responseItem = await ItemModel.deleteMany({ completed: true })
-  return responseItem
+const deleteCompletedTasks = async (id: string) => {
+  const list = await locateListWithId(id)
+  const listToModify = list[0]
+  listToModify.items = listToModify.items.filter(
+    (item) => item.completed === false
+  )
+  await listToModify.save()
+
+  return list
 }
 
 const createList = async (id: Types.ObjectId | string) => {

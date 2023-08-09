@@ -16,6 +16,6 @@ router.get('/', checkJwt, getItems)
 router.post('/:id', checkJwt, postItem)
 router.put('/:id', checkJwt, updateItem)
 router.delete('/:id', checkJwt, deleteItem)
-router.delete('/', checkJwt, deleteItems)
+router.delete('/allCompleted/:id', checkJwt, deleteItems)
 
 export { router }
