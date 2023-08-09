@@ -3,6 +3,6 @@ import { Task } from './task.interface'
 
 export interface List {
   name: string
-  owners: [_id: Types.ObjectId]
+  owners: Types.ObjectId[]
   items: Task[]
 }

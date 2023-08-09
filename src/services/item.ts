@@ -6,7 +6,14 @@ import UserModel from '../models/user'
 import { List } from '../interfaces/list.interface'
 const insertTask = async (item: Task, id: string) => {
   const responseInsert = await ItemModel.create(item)
-  const list = await locateListWithId(id)
+  let list = await locateListWithId(id)
+  console.log('list before', list)
+
+  if (list.length === 0) {
+    const newList = await createList(id)
+    list = [newList]
+  }
+  console.log('list after', list)
   const listToModify = list[0]
   if (listToModify) {
     listToModify.items.push(responseInsert)
@@ -48,6 +55,7 @@ const createList = async (id: Types.ObjectId | string) => {
     owners: [id],
     items: []
   })
+  return responseItem
 }
 const locateListWithId = async (id: Types.ObjectId | string) => {
   if (!isValidObjectId(id)) {

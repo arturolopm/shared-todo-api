@@ -51,9 +51,18 @@ const acceptInvitation = async ({ _id, user }: AcceptInvitationData) => {
     const newUser = await UserModel.findOne({ email: user })
     if (!newUser) return 'ERROR_NOT_USER'
     const dropList = await locateListWithId(newUser._id)
-    dropList.map(async (userList) => {
-      await userList.deleteOne()
-    })
+
+    if (dropList.length > 0 && newUser) {
+      await Promise.all(
+        dropList.map(async (userList) => {
+          userList.owners = userList.owners.filter(
+            (owner) => owner.toString() !== newUser._id.toString()
+          )
+
+          await userList.save() // Save changes
+        })
+      )
+    }
     list.owners.push(newUser._id)
 
     await list.save()
