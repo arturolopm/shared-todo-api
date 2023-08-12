@@ -9,6 +9,7 @@ import {
   locateItemsWithUserId,
   locateListWithId
 } from '../services/item'
+import { RequestExtended } from '../interfaces/auth.interface'
 
 const getItemsInUserList = async ({ params }: Request, res: Response) => {
   try {
@@ -30,9 +31,11 @@ const getItems = async (req: Request, res: Response) => {
     handleHttp(res, 'error get items')
   }
 }
-const updateItem = async ({ params, body }: Request, res: Response) => {
+const updateItem = async (req: RequestExtended, res: Response) => {
   try {
-    const { id } = params
+    const { id } = req.params
+    const { body } = req
+
     const response = await updateTask(id, body)
     res.send(response)
   } catch (e) {

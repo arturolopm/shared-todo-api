@@ -37,7 +37,6 @@ const updateTask = async (id: string, data: Task) => {
   const responseItem = await ItemModel.findOneAndUpdate({ _id: id }, data, {
     new: true
   })
-
   return responseItem
 }
 const deleteTask = async (id: string) => {
@@ -96,7 +95,7 @@ const locateItemsWithUserId = async (id: Types.ObjectId | string) => {
     })
     .populate({
       path: 'items',
-      select: ' name completed'
+      select: ' name completed completedBy'
     })) as unknown as List[]
 
   const responseItem = list[list.length - 1]
