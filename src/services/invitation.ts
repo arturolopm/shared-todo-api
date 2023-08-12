@@ -39,6 +39,8 @@ const processInvitation = async ({ data, user }: InvitationData) => {
 }
 
 const acceptInvitation = async ({ _id, user }: AcceptInvitationData) => {
+  console.log('Reached')
+
   const invitation = await InvitationModel.findById(_id)
   if (!invitation) return 'INVITATION_NOT_FOUND'
   const senderId = invitation ? invitation.senderId : null
@@ -57,7 +59,7 @@ const acceptInvitation = async ({ _id, user }: AcceptInvitationData) => {
         dropList.map(async (userList) => {
           if (userList.owners.length > 0) {
             userList.owners = userList.owners.filter(
-              (owner) => owner.toString() !== newUser._id.toString()
+              (owner) => owner._id.toString() !== newUser._id.toString()
             )
           }
 
