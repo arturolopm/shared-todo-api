@@ -6,13 +6,14 @@ import { generateToken } from '../utils/jwt.handle'
 import { createList, locateListWithId } from './item'
 
 const registerNewUser = async ({ email, password, name }: User) => {
-  const checkIs = await UserModel.findOne({ email: email })
+  const emailToCheck = email.toLocaleLowerCase()
+  const checkIs = await UserModel.findOne({ email: emailToCheck })
   if (checkIs) return 'ALREADY_USER'
   const passHash = await encrypt(password)
 
   try {
     const registerNewUser = await UserModel.create({
-      email,
+      emailToCheck,
       password: passHash,
       name
     })
@@ -29,7 +30,8 @@ const registerNewUser = async ({ email, password, name }: User) => {
   return data
 }
 const loginUser = async ({ email, password }: Auth) => {
-  const checkIs = await UserModel.findOne({ email })
+  const emailToCheck = email.toLocaleLowerCase()
+  const checkIs = await UserModel.findOne({ emailToCheck })
 
   if (!checkIs) return 'USER_NOT_FOUND'
   const passWordHash = checkIs.password // This is encrypted
