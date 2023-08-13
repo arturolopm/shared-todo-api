@@ -39,8 +39,6 @@ const processInvitation = async ({ data, user }: InvitationData) => {
 }
 
 const acceptInvitation = async ({ _id, user }: AcceptInvitationData) => {
-  console.log('Reached')
-
   const invitation = await InvitationModel.findById(_id)
   if (!invitation) return 'INVITATION_NOT_FOUND'
   const senderId = invitation ? invitation.senderId : null

@@ -21,8 +21,6 @@ const checkJwt = async (
       next()
     }
   } catch (e) {
-    console.log({ e })
-
     res.status(400)
     res.send('NOT_VALID_SESSION')
   }
