@@ -93,7 +93,7 @@ const locateItemsWithUserId = async (id: Types.ObjectId | string) => {
     })
     .populate({
       path: 'items',
-      select: ' name completed completedBy',
+      select: ' name completed completedBy time',
       options: { sort: { completed: 1 } }
     })) as unknown as List[]
 

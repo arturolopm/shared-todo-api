@@ -4,4 +4,5 @@ export interface Task {
   addedBy?: string
   completedBy?: string
   workSpace?: string
+  time: number
 }
