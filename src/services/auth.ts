@@ -8,12 +8,13 @@ import { createList, locateListWithId } from './item'
 const registerNewUser = async ({ email, password, name }: User) => {
   const emailToCheck = email.toLocaleLowerCase()
   const checkIs = await UserModel.findOne({ email: emailToCheck })
+
   if (checkIs) return 'ALREADY_USER'
   const passHash = await encrypt(password)
 
   try {
     const registerNewUser = await UserModel.create({
-      emailToCheck,
+      email: emailToCheck,
       password: passHash,
       name
     })
