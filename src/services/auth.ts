@@ -31,7 +31,7 @@ const registerNewUser = async ({ email, password, name }: User) => {
 }
 const loginUser = async ({ email, password }: Auth) => {
   const emailToCheck = email.toLocaleLowerCase()
-  const checkIs = await UserModel.findOne({ emailToCheck })
+  const checkIs = await UserModel.findOne({ email: emailToCheck })
 
   if (!checkIs) return 'USER_NOT_FOUND'
   const passWordHash = checkIs.password // This is encrypted
